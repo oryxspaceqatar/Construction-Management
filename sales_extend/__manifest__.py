@@ -1,7 +1,7 @@
 {
     'name': "Sale Extend",
     'version': '17.0.1.0.1',
-    'depends': ['base', 'sale','sales_team','purchase'],
+    'depends': ['base', 'sale','sales_team','purchase','construction_management'],
     'data': [
         'security/security.xml',
         'data/mail_template.xml',
