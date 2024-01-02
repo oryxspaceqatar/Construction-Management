@@ -1,0 +1,148 @@
+<odoo>
+    <data>
+        <record id="email_template_edi_sale_approve" model="mail.template">
+            <field name="name">Sales: Send Quotation</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="subject">{{ object.company_id.name }} {{ object.state in ('draft', 'sent') and (ctx.get('proforma') and 'Proforma' or 'Quotation') or 'Order' }} (Ref {{ object.name or 'n/a' }}) - {{ object.partner_id.name }} Approval Needed</field>
+            <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email_formatted or user.email_formatted) }}</field>
+            <field name="email_to">{{ ctx.get('to_emails') }}</field>
+            <field name="description">Used by salespeople when they send quotations or proforma to prospects</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        <t t-set="doc_name" t-value="'quotation' if object.state in ('draft', 'sent') else 'order'"/>
+        Dear Team,
+        <br/><br/>
+        <t t-if="ctx.get('proforma')">
+            Pro forma invoice for <t t-out="doc_name or ''">Quotation</t> <span style="font-weight: bold;"  t-out="object.name or ''">S00052</span>
+            <t t-if="object.origin">
+                (with reference: <t t-out="object.origin or ''"></t> )
+            </t>
+            amounting in <span style="font-weight: bold;"  t-out="format_amount(object.amount_total, object.currency_id) or ''">$ 10.00</span> is available.
+        </t>
+        <t t-else="">
+            <t t-out="doc_name or ''">Quotation</t> <span style="font-weight: bold;" t-out="object.name or ''"></span>
+            <t t-if="object.origin">
+                (with reference: <t t-out="object.origin or ''">S00052</t> )
+            </t>
+            amounting in <span style="font-weight: bold;" t-out="format_amount(object.amount_total, object.currency_id) or ''">$ 10.00</span> is ready for review.
+        </t>
+        <br/><br/>
+        Please review and approve the attached quotation at your earliest convenience.
+        <t t-if="not is_html_empty(object.user_id.signature)">
+            <br/><br/>
+            <t t-out="object.user_id.signature or ''">--<br/>Mitchell Admin</t>
+        </t>
+        <br/><br/>
+    </p>
+</div>
+            </field>
+            <field name="report_template_ids" eval="[(4, ref('sale.action_report_saleorder'))]"/>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+          <record id="email_template_edi_invoice_approval" model="mail.template">
+            <field name="name">Invoice: Sending</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="email_from">{{ (object.invoice_user_id.email_formatted or object.company_id.email_formatted or user.email_formatted) }}</field>
+            <field name="email_to">{{ ctx.get('to_emails') }}</field>
+            <field name="subject">{{ object.company_id.name }} Invoice (Ref {{ object.name or 'n/a' }}) - {{ object.partner_id.name }} Approval Needed</field>
+            <field name="description">Sent to customers with their invoices in attachment</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Dear Team
+        <br /><br />
+        <t t-if="object.name">
+            Invoice <span style="font-weight:bold;" t-out="object.name or ''">INV/2021/05/0005</span>
+        </t>
+        <t t-else="">
+            Invoice
+        </t>
+        <t t-if="object.invoice_origin">
+            (with reference: <t t-out="object.invoice_origin or ''">SUB003</t>)
+        </t>
+        amounting in <span style="font-weight:bold;" t-out="format_amount(object.amount_total, object.currency_id) or ''">$ 143,750.00</span>
+        from <t t-out="object.company_id.name or ''">YourCompany</t>.
+        <t t-if="object.payment_state in ('paid', 'in_payment')">
+            This invoice is already paid.
+        </t>
+        <t t-else="">
+            Please Approve this invoice at your earliest convenience.
+<!--            <t t-if="object.payment_reference">-->
+<!--                <br /><br />-->
+<!--                Please use the following communication for your payment: <span style="font-weight:bold;" t-out="object.payment_reference or ''">INV/2021/05/0005</span>.-->
+<!--            </t>-->
+        </t>
+
+        <t t-if="not is_html_empty(object.invoice_user_id.signature)">
+            <br /><br />
+            <t t-out="object.invoice_user_id.signature or ''">--<br/>Mitchell Admin</t>
+        </t>
+    </p>
+</div>
+            </field>
+            <field name="report_template_ids" eval="[(4, ref('account.account_invoices'))]"/>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+         <record id="mail_template_data_delivery_confirmation_approval" model="mail.template">
+            <field name="name">Shipping: Send by Email</field>
+            <field name="model_id" ref="model_stock_picking"/>
+            <field name="subject">{{ object.company_id.name }} Delivery Order (Ref {{ object.name or 'n/a' }}) - {{ object.partner_id.name }} Approval Needed</field>
+           <field name="email_to">{{ ctx.get('to_emails') }}</field>
+            <field name="description">Sent to the customers when orders are delivered, if the setting is enabled</field>
+            <field name="body_html" type="html">
+    <div style="margin: 0px; padding: 0px;">
+        <p style="margin: 0px; padding: 0px; font-size: 13px;">
+            Dear Team ,<br/><br/>
+            New Material Requisition Order is created.
+            <br/><br/>
+            Please Approve this Material Requisition Order at your earliest convenience.<br/><br/>
+            Thank you,
+            <t t-if="user.signature">
+                <br />
+                <t t-out="user.signature or ''">--<br/>Mitchell Admin</t>
+            </t>
+        </p>
+    </div>
+            </field>
+            <field name="report_template_ids" eval="[(4, ref('stock.action_report_delivery'))]"/>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        <record id="email_template_edi_purchase_approval" model="mail.template">
+            <field name="name">Purchase: Request For Quotation</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">{{ object.company_id.name }} Order (Ref {{ object.name or 'n/a' }}) - {{ object.partner_id.name }} Approval Needed</field>
+             <field name="email_to">{{ ctx.get('to_emails') }}</field>
+            <field name="body_html" type="html">
+<div style="margin: 0px; padding: 0px;">
+    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        Dear Team,
+        <br/><br/>
+        Here is in attachment a request for Purchase Order <span style="font-weight:bold;" t-out="object.name or ''">P00015</span>
+        <t t-if="object.partner_ref">
+            with reference: <t t-out="object.partner_ref or ''">REF_XXX</t>
+        </t>
+        from <t t-out="object.company_id.name or ''">YourCompany</t>.
+        <br/><br/>
+        Please review and approve the attached quotation at your earliest convenience.
+        <br/><br/>
+        Best regards,
+        <t t-if="not is_html_empty(object.user_id.signature)">
+            <br/><br/>
+            <t t-out="object.user_id.signature or ''">--<br/>Mitchell Admin</t>
+        </t>
+    </p>
+</div></field>
+            <field name="report_template_ids" eval="[(4, ref('purchase.report_purchase_quotation'))]"/>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+
+</odoo>

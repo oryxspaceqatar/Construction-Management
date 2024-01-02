@@ -1,0 +1,127 @@
+<odoo>
+    <data>
+         <record id="sales_team.group_sale_salesman" model="res.groups">
+            <field name="name">Sales Coordinator</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="comment">the user will have access to his own data in the sales application.</field>
+        </record>
+
+         <record id="sales_team.group_sale_salesman_all_leads" model="res.groups">
+            <field name="name">Choices GM</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="comment">the user will have access to all records of everyone in the sales application.</field>
+        </record>
+
+         <record id="group_sale_accounts_all_leads" model="res.groups">
+            <field name="name">Accounts</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+           <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="comment">the user will have access to all records of everyone in the sales application.</field>
+        </record>
+
+         <record id="group_sale_md_all_leads" model="res.groups">
+            <field name="name">MD</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
+            <field name="comment">the user will have access to all records of everyone in the sales application.</field>
+        </record>
+
+        <record id="sales_team.group_sale_manager" model="res.groups">
+            <field name="name">Administrator</field>
+            <field name="comment">the user will have an access to the sales configuration as well as statistic reports.</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('sales_team.group_sale_salesman_all_leads')),
+                (4, ref('mail.group_mail_template_editor')), (4, ref('group_sale_accounts_all_leads')), (4, ref('group_sale_md_all_leads'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+    <record id="construction_management.group_purchase_requisition_user" model="res.groups">
+        <field name="name">Sales Coordinator</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="construction_management.module_category_purchase_requisition"/>
+    </record>
+
+    <record id="construction_management.group_requisition_department_manager" model="res.groups">
+        <field name="name">Choices GM</field>
+        <field name="implied_ids" eval="[(4, ref('construction_management.group_purchase_requisition_user'))]"/>
+        <field name="category_id" ref="construction_management.module_category_purchase_requisition"/>
+    </record>
+        <record id="group_requisition_department_procurement" model="res.groups">
+            <field name="name">Procurement</field>
+            <field name="implied_ids" eval="[(4, ref('construction_management.group_purchase_requisition_user'))]"/>
+            <field name="category_id" ref="construction_management.module_category_purchase_requisition"/>
+        </record>
+
+             <record id="group_requisition_department_md" model="res.groups">
+                <field name="name">MD</field>
+                <field name="implied_ids" eval="[(4, ref('construction_management.group_purchase_requisition_user'))]"/>
+                <field name="category_id" ref="construction_management.module_category_purchase_requisition"/>
+            </record>
+         <record id="group_requisition_department_accounts" model="res.groups">
+                <field name="name">Accounts</field>
+                <field name="implied_ids" eval="[(4, ref('construction_management.group_purchase_requisition_user'))]"/>
+                <field name="category_id" ref="construction_management.module_category_purchase_requisition"/>
+            </record>
+
+         <record id="purchase.group_purchase_user" model="res.groups">
+            <field name="name">Procurement</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="base.module_category_inventory_purchase"/>
+        </record>
+         <record id="group_purchase_gm" model="res.groups">
+            <field name="name">Choices GM</field>
+            <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+            <field name="category_id" ref="base.module_category_inventory_purchase"/>
+        </record>
+        <record id="group_purchase_md" model="res.groups">
+            <field name="name">MD</field>
+            <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+            <field name="category_id" ref="base.module_category_inventory_purchase"/>
+        </record>
+
+         <record id="group_purchase_accounts" model="res.groups">
+            <field name="name">Accounts</field>
+            <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
+            <field name="category_id" ref="base.module_category_inventory_purchase"/>
+        </record>
+
+    <record id="account.group_account_invoice" model="res.groups">
+        <field name="name">Sales Coordinator</field>
+        <field name="category_id" ref="base.module_category_accounting_accounting"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+        <record id="group_account_invoice_gm" model="res.groups">
+            <field name="name">Choices GM</field>
+            <field name="category_id" ref="base.module_category_accounting_accounting"/>
+             <field name="implied_ids" eval="[(4, ref('account.group_account_invoice'))]"/>
+        </record>
+
+         <record id="group_account_invoice_procurement" model="res.groups">
+            <field name="name">Procurement</field>
+            <field name="category_id" ref="base.module_category_accounting_accounting"/>
+              <field name="implied_ids" eval="[(4, ref('account.group_account_invoice'))]"/>
+        </record>
+        <record id="group_account_invoice_md" model="res.groups">
+            <field name="name">MD</field>
+            <field name="category_id" ref="base.module_category_accounting_accounting"/>
+            <field name="implied_ids" eval="[(4, ref('account.group_account_invoice'))]"/>
+        </record>
+
+         <record id="group_account_invoice_accounts_group" model="res.groups">
+            <field name="name">Accounts</field>
+            <field name="category_id" ref="base.module_category_accounting_accounting"/>
+             <field name="implied_ids" eval="[(4, ref('account.group_account_invoice'))]"/>
+        </record>
+
+        <record id="account.group_account_manager" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="category_id" ref="base.module_category_accounting_accounting"/>
+        <field name="implied_ids" eval="[(4, ref('account.group_account_invoice')),(4, ref('group_account_invoice_gm')),(4, ref('group_account_invoice_procurement')),(4, ref('group_account_invoice_md')),(4, ref('group_account_invoice_accounts_group'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+
+    </data>
+</odoo>

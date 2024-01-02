@@ -1,0 +1,35 @@
+<odoo>
+
+    <record id="view_sale_order_form_inherited" model="ir.ui.view">
+        <field name="name">sale.order.form.inherited</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+        <xpath expr="//header" position="inside">
+             <button name="general_manager_approve" type="object" string="GM Approve" groups="sales_team.group_sale_salesman_all_leads" invisible="state != 'draft'"/>
+            <button name="accounts_approve" type="object" string="Accounts Approve" groups="sales_extend.group_sale_accounts_all_leads" invisible="state != 'gm_approved'"/>
+            <button name="md_approve" type="object" string="MD Approve" groups="sales_extend.group_sale_accounts_all_leads" invisible="state != 'accounts_approved'"/>
+        </xpath>
+            <button name="action_quotation_send" position="replace">
+                 <button name="action_quotation_send" id="send_by_email_primary" string="Send by Email" type="object" data-hotkey="g"
+                    invisible="state not in ['draft','gm_approved','accounts_approved','md_approved']" class="btn-primary"
+                    context="{'validate_analytic': True}"/>
+            </button>
+            <button name="action_confirm" position="replace">
+                 <button name="action_confirm" data-hotkey="q"
+                    string="Confirm" type="object" context="{'validate_analytic': True}"
+                    invisible="state not in ['md_approved']" groups="sales_team.group_sale_salesman"/>
+            </button>
+<!--           <xpath expr="//button[@id='action_confirm']" position="attributes">-->
+<!--            <attribute name="invisible">1</attribute>-->
+<!--        </xpath>-->
+
+            <button name="action_cancel" position="replace">
+                <button name="action_cancel" type="object" string="Cancel" invisible="state not in ['draft', 'sent', 'sale','gm_approved','accounts_approved','md_approved'] or not id" data-hotkey="x"/>
+            </button>
+             <button name="action_quotation_send" position="replace">
+            </button>
+        </field>
+    </record>
+    
+</odoo>

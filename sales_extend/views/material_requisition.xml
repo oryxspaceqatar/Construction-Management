@@ -1,0 +1,42 @@
+<odoo>
+     <record id="sales_extend_inherit_material_request_form" model="ir.ui.view">
+            <field name="name">inherit.stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//header" position="replace">
+                 <header>
+                      <button name="general_manager_approve" type="object" string="GM Approve"
+                                groups="construction_management.group_requisition_department_manager"
+                                invisible="state != 'draft'"/>
+                     <button name="procurement_approve" type="object" string="Procurement Approve"
+                                groups="sales_extend.group_requisition_department_procurement"
+                                invisible="state != 'gm_approved'"/>
+<!--                     <button name="md_approve" type="object" string="MD Approve"-->
+<!--                                groups="sales_extend.group_requisition_department_md,sales_extend.group_account_invoice_accounts_group"-->
+<!--                                invisible="state != 'procurement_approved'"/>-->
+                    <button name="action_confirm" invisible="state != 'draft'" string="Mark as Todo" type="object" class="oe_highlight" groups="base.group_user" data-hotkey="q"/>
+                    <button name="action_assign" invisible="not show_check_availability" string="Check Availability" type="object" class="oe_highlight" groups="base.group_user" data-hotkey="w"/>
+                    <button name="button_validate" invisible="state in ('draft', 'confirmed', 'done', 'cancel','gm_approved')" string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user" data-hotkey="v"/>
+                    <button name="button_validate" invisible="1" string="Validate" type="object" groups="stock.group_stock_user" class="o_btn_validate" data-hotkey="v"/>
+                    <widget name="signature" string="Sign" highlight="1"
+                            invisible="not id or picking_type_code != 'outgoing' or state != 'done'"
+                            full_name="partner_id" groups="stock.group_stock_sign_delivery"/>
+                    <widget name="signature" string="Sign"
+                            invisible="not id or picking_type_code != 'outgoing' or state == 'done'"
+                            full_name="partner_id" groups="stock.group_stock_sign_delivery"/>
+                    <button name="do_print_picking" string="Print" groups="stock.group_stock_user" type="object" invisible="state != 'assigned'" data-hotkey="o"/>
+                    <button string="Print Labels" type="object" name="action_open_label_type"/>
+                    <button name="%(stock.action_report_delivery)d" string="Print" invisible="state != 'done'" type="action" groups="base.group_user" data-hotkey="o"/>
+                    <button name="%(stock.act_stock_return_picking)d" string="Return" invisible="state != 'done'" type="action" groups="base.group_user" data-hotkey="k"/>
+                    <button name="%(construction_management.action_create_purchase_order)d" type="action" string="Create Purchase Order"
+                            class="oe_highlight" invisible="state not in ['procurement_approved']"/>
+                     <field name="state" widget="statusbar" invisible="picking_type_code != 'incoming'" statusbar_visible="draft,gm_approved,procurement_approved,assigned,done"/>
+                    <field name="state" widget="statusbar" invisible="picking_type_code == 'incoming'" statusbar_visible="draft,gm_approved,procurement_approved,confirmed,assigned,done"/>
+                    <button name="action_cancel" invisible="state not in ('assigned', 'confirmed', 'draft', 'waiting')" string="Cancel" groups="base.group_user" type="object" data-hotkey="x"/>
+                </header>
+            </xpath>
+
+            </field>
+        </record>
+</odoo>
