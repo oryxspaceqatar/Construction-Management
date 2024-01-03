@@ -29,6 +29,9 @@
             </button>
              <button name="action_quotation_send" position="replace">
             </button>
+            <field name="order_line" position="attributes">
+                <attribute name="readonly">state not in ['draft']</attribute>
+            </field>
         </field>
     </record>
     
