@@ -82,7 +82,9 @@
                     </header>
 
                 </xpath>
-
+            <field name="invoice_line_ids" position="attributes">
+                <attribute name="readonly">state not in ['draft']</attribute>
+            </field>
 
             </field>
         </record>

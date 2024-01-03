@@ -36,6 +36,13 @@
                     <button name="action_cancel" invisible="state not in ('assigned', 'confirmed', 'draft', 'waiting')" string="Cancel" groups="base.group_user" type="object" data-hotkey="x"/>
                 </header>
             </xpath>
+                 <field name="move_ids_without_package" position="attributes">
+                <attribute name="readonly">state not in ['draft']</attribute>
+            </field>
+
+                 <field name="package_level_ids" position="attributes">
+                <attribute name="readonly">state not in ['draft']</attribute>
+            </field>
 
             </field>
         </record>

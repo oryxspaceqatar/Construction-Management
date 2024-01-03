@@ -52,6 +52,10 @@
                            statusbar_visible="draft,gm_approved,md_approved,sent,purchase" readonly="1"/>
                 </header>
             </xpath>
+
+             <field name="order_line" position="attributes">
+                <attribute name="readonly">state not in ['draft']</attribute>
+            </field>
         </field>
     </record>
 </odoo>
