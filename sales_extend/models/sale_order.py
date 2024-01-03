@@ -45,7 +45,7 @@ class SaleOrders(models.Model):
     def md_approve(self):
         self.write({'state': 'md_approved'})
         template_id = self.env.ref("sales_extend.email_template_edi_sale_approve")
-        group_obj = self.env.ref("sales_extend.group_sale_salesman")
+        group_obj = self.env.ref("sales_team.group_sale_salesman")
         emails = list(set(group_obj.users.mapped("login")))
         if template_id and emails:
             emails = ','.join(emails)
