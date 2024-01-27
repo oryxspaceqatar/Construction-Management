@@ -62,7 +62,7 @@
                                 invisible="not id or state != 'draft' or move_type != 'entry'"/>
                         <button name="button_cancel" string="Cancel" type="object"
                                 groups="account.group_account_invoice" data-hotkey="x"
-                                invisible="not id or state != 'draft' or move_type == 'entry'"/>
+                                invisible="not id or state in ['cancel','posted'] or move_type == 'entry'"/>
                         <button name="button_draft" string="Reset to Draft" type="object"
                                 groups="account.group_account_invoice"
                                 invisible="not show_reset_to_draft_button" data-hotkey="r"/>
