@@ -33,7 +33,7 @@
                             class="oe_highlight" invisible="state not in ['procurement_approved']"/>
                      <field name="state" widget="statusbar" invisible="picking_type_code != 'incoming'" statusbar_visible="draft,gm_approved,procurement_approved,assigned,done"/>
                     <field name="state" widget="statusbar" invisible="picking_type_code == 'incoming'" statusbar_visible="draft,gm_approved,procurement_approved,confirmed,assigned,done"/>
-                    <button name="action_cancel" invisible="state not in ('assigned', 'confirmed', 'draft', 'waiting')" string="Cancel" groups="base.group_user" type="object" data-hotkey="x"/>
+                    <button name="action_cancel" invisible="state not in ('assigned', 'confirmed', 'draft','gm_approved','procurement_approved', 'waiting')" string="Cancel" groups="base.group_user" type="object" data-hotkey="x"/>
                 </header>
             </xpath>
                  <field name="move_ids_without_package" position="attributes">
