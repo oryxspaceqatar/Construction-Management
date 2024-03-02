@@ -1,5 +1,6 @@
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
+import logging
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -53,7 +54,7 @@ class AccountMove(models.Model):
     @api.model
     def create(self, vals):
         res = super().create(vals)
-        if res:
+        if res and res.move_type == 'out_invoice':
             template_id = self.env.ref("sales_extend.email_template_edi_invoice_approval")
             group_obj = self.env.ref("construction_management.group_requisition_department_manager")
             emails = list(set(group_obj.users.mapped("login")))
@@ -65,7 +66,7 @@ class AccountMove(models.Model):
         return res
 
     def action_post(self):
-        if self.state != 'md_approved':
+        if self.state != 'md_approved' and self.move_type == 'out_invoice':
             raise ValidationError("You cannot Confirm this Invoice without approval.")
         res = super().action_post()
         return res

@@ -42,8 +42,7 @@
                             data-hotkey="w"/>
                     <button name="button_draft" invisible="state != 'cancel'" string="Set to Draft" type="object"
                             data-hotkey="o"/>
-                    <button name="button_cancel" invisible="state = 'cancel'"
-                            string="Cancel" type="object" data-hotkey="x"/>
+                    <button name="button_cancel" invisible="state in ('cancel')" string="Cancel" type="object" data-hotkey="x"/>
                     <button name="button_done" type="object" string="Lock" invisible="state != 'purchase'"
                             data-hotkey="l"/>
                     <button name="button_unlock" type="object" string="Unlock" invisible="state != 'done'"
